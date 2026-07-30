@@ -1,0 +1,150 @@
+import heapq
+
+
+def dijkstra(grafo, inicio, destino):
+    distancias = {nodo: float("inf") for nodo in grafo}
+    anteriores = {nodo: None for nodo in grafo}
+
+    distancias[inicio] = 0
+    cola = [(0, inicio)]
+
+    while cola:
+        distancia_actual, nodo_actual = heapq.heappop(cola)
+
+        if distancia_actual > distancias[nodo_actual]:
+            continue
+
+        for vecino, peso in grafo[nodo_actual]:
+            nueva_distancia = distancia_actual + peso
+
+            if nueva_distancia < distancias[vecino]:
+                distancias[vecino] = nueva_distancia
+                anteriores[vecino] = nodo_actual
+                heapq.heappush(cola, (nueva_distancia, vecino))
+
+    if distancias[destino] == float("inf"):
+        return None
+
+    return distancias[destino]
+
+
+def cerrar_vertice(grafo, vertice):
+    nuevo_grafo = {}
+
+    for nodo in grafo:
+        if nodo != vertice:
+            nuevo_grafo[nodo] = []
+
+            for vecino, peso in grafo[nodo]:
+                if vecino != vertice:
+                    nuevo_grafo[nodo].append((vecino, peso))
+
+    return nuevo_grafo
+
+
+def comparar_rutas(grafo_original, grafo_cerrado, pares):
+    print("\nTABLA DE RESULTADOS")
+    print("-" * 80)
+    print(
+        f"{'Origen':15}{'Destino':15}"
+        f"{'Antes':12}{'Después':12}"
+        f"{'Diferencia':12}{'Estado'}"
+    )
+    print("-" * 80)
+
+    for origen, destino in pares:
+        antes = dijkstra(grafo_original, origen, destino)
+        despues = dijkstra(grafo_cerrado, origen, destino)
+
+        if antes is None:
+            antes_texto = "∞"
+        else:
+            antes_texto = antes
+
+        if despues is None:
+            despues_texto = "∞"
+            diferencia = "N/A"
+            estado = "Desconectado"
+        else:
+            diferencia = despues - antes
+            if diferencia > 0:
+                estado = "Aumentó"
+            else:
+                estado = "Sin cambio"
+
+        print(
+            f"{origen:15}{destino:15}"
+            f"{str(antes_texto):12}"
+            f"{str(despues if despues else '∞'):12}"
+            f"{str(diferencia):12}"
+            f"{estado}"
+        )
+
+
+# Grafo de transporte
+grafo = {
+    "Portal": [
+        ("Calle26", 4),
+        ("Terminal", 8)
+    ],
+    "Calle26": [
+        ("Portal", 4),
+        ("Museo", 3),
+        ("Parque", 5)
+    ],
+    "Museo": [
+        ("Calle26", 3),
+        ("Centro", 2),
+        ("Biblioteca", 4)
+    ],
+    "Centro": [
+        ("Museo", 2),
+        ("Universidad", 6),
+        ("Hospital", 5)
+    ],
+    "Universidad": [
+        ("Centro", 6),
+        ("Biblioteca", 2),
+        ("Terminal", 7)
+    ],
+    "Biblioteca": [
+        ("Museo", 4),
+        ("Universidad", 2),
+        ("Parque", 3)
+    ],
+    "Parque": [
+        ("Calle26", 5),
+        ("Biblioteca", 3),
+        ("Hospital", 4)
+    ],
+    "Hospital": [
+        ("Parque", 4),
+        ("Centro", 5),
+        ("Terminal", 2)
+    ],
+    "Terminal": [
+        ("Portal", 8),
+        ("Universidad", 7),
+        ("Hospital", 2)
+    ]
+}
+
+
+# Pares de prueba
+pares = [
+    ("Portal", "Universidad"),
+    ("Portal", "Hospital"),
+    ("Calle26", "Terminal"),
+    ("Museo", "Universidad"),
+    ("Parque", "Portal")
+]
+
+
+# Punto que se cierra
+vertice_cerrado = "Centro"
+
+grafo_nuevo = cerrar_vertice(grafo, vertice_cerrado)
+
+print("Se cerró el vértice:", vertice_cerrado)
+
+comparar_rutas(grafo, grafo_nuevo, pares)
