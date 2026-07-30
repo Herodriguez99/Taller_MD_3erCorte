@@ -1,0 +1,15 @@
+Ejemplo de Ejecución:
+
+Se cerró el vértice: Centro
+
+TABLA DE RESULTADOS
+--------------------------------------------------------------------------------
+Origen         Destino        Antes       Después     Diferencia  Estado
+--------------------------------------------------------------------------------
+Portal         Universidad    15          19          4           Aumentó
+Portal         Hospital       10          12          2           Aumentó
+Calle26        Terminal       18          16          -2          Sin cambio
+Museo          Universidad    8           6           -2          Sin cambio
+Parque         Portal         9           9           0           Sin cambio
+
+Nota: Los valores pueden variar según la estructura del grafo elegido.
