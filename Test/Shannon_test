@@ -1,0 +1,27 @@
+Ejemplo de Ejecución:
+
+Para el texto repetitivo:
+
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+la distribución es:
+
+A = 1.0
+
+La entropía será:
+
+H = 0 bits/símbolo
+
+porque no existe incertidumbre: siempre sabemos cuál será el siguiente símbolo.
+
+Para un texto más variado:
+
+La información digital puede tener muchos símbolos diferentes
+
+aparecen más símbolos con diferentes probabilidades, por lo que la entropía aumenta. Por ejemplo:
+
+Entropía texto repetitivo: 0.0 bits/símbolo
+
+Entropía texto variado: aproximadamente 4 bits/símbolo
+
+Por lo tanto, el texto variado tiene mayor entropía.
