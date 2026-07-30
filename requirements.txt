@@ -1,0 +1,12 @@
+A continuación se presentan las librerías usadas en cada ejercicio:
+
+Punto                       | Librería                 | Instalación necesaria 
+Cifrado César               |	Ninguna	                 | No
+RSA	                        | Ninguna	                 | No
+Suma secreta multipartita   |	random	                 | No (incluida en Python)
+Dijkstra (rutas más cortas)	| heapq	                   | No (incluida en Python)
+Coloreo de grafos	          | Ninguna	                 | No
+Tablas de verdad	          | itertools	               | No (incluida en Python)
+Simplificación booleana     |	itertools	               | No (incluida en Python)
+Entropía de Shannon	        | math, heapq, collections | No (incluidas en Python)
+Simulador de qubit	        | numpy, random	           | Sí: numpy
