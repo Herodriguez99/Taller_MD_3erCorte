@@ -1,0 +1,16 @@
+Ejemplo de Ejecución:
+
+Entrada:
+
+p = 61
+q = 53
+e = 17
+M = 65
+
+Salida esperada:
+
+n = 3233
+φ(n) = 3120
+d = 2753
+C = 2790
+Mensaje descifrado = 65
