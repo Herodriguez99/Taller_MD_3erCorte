@@ -1,0 +1,82 @@
+Ejemplo de Ejecución:
+
+Caso 1
+
+Aplicando:
+
+X∣0⟩
+
+resultado:
+
+Vector del estado:
+[0. 1.]
+
+Probabilidad de medir |0>: 0 %
+Probabilidad de medir |1>: 100 %
+
+Resultados de 1000 mediciones:
+0: 0
+1: 1000
+
+Esto confirma:
+
+X∣0⟩=∣1⟩
+Caso 2
+
+Aplicando:
+
+H∣0⟩
+
+se obtiene:
+
+2
+	​
+
+1
+	​
+
+(∣0⟩+∣1⟩)
+
+Por lo tanto:
+
+P(0)=
+2
+1
+	​
+
+P(1)=
+2
+1
+	​
+
+
+Ejemplo de mediciones:
+
+Probabilidad de medir |0>: 50 %
+Probabilidad de medir |1>: 50 %
+
+Resultados de 1000 mediciones:
+0: 503
+1: 497
+
+Los valores pueden cambiar ligeramente porque la medición es aleatoria.
+
+Caso 3
+
+Aplicando dos veces Hadamard:
+
+HH∣0⟩
+
+debe regresar:
+
+∣0⟩
+
+Salida esperada:
+
+Vector del estado:
+[1.00000000e+00 2.22044605e-16]
+
+Probabilidad de medir |0>: 100 %
+Probabilidad de medir |1>: 0 %
+
+El pequeño valor cercano a cero aparece por errores de precisión de los cálculos con números decimales.
