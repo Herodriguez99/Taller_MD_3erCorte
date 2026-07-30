@@ -1,0 +1,27 @@
+Ejemplo de Ejecución:
+
+Para:
+
+F(A,B,C)=Σ(1,3,5,7)
+
+el programa obtiene:
+
+Minterminos: {1, 3, 5, 7}
+
+Expresión simplificada:
+C
+
+Tabla de verificación:
+
+Entrada | Original | Simplificada
+---------------------------------
+000     |    0     |      0
+001     |    1     |      1
+010     |    0     |      0
+011     |    1     |      1
+100     |    0     |      0
+101     |    1     |      1
+110     |    0     |      0
+111     |    1     |      1
+
+La tabla confirma que ambas expresiones producen exactamente los mismos resultados.
