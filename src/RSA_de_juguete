@@ -1,0 +1,63 @@
+def mcd(a, b):
+    while b != 0:
+        a, b = b, a % b
+    return a
+
+
+def euclides_extendido(a, b):
+    if b == 0:
+        return a, 1, 0
+
+    mcd_valor, x1, y1 = euclides_extendido(b, a % b)
+    x = y1
+    y = x1 - (a // b) * y1
+
+    return mcd_valor, x, y
+
+
+def inverso_modular(e, phi):
+    mcd_valor, x, _ = euclides_extendido(e, phi)
+
+    if mcd_valor != 1:
+        return None
+
+    return x % phi
+
+
+def cifrar(mensaje, e, n):
+    return pow(mensaje, e, n)
+
+
+def descifrar(cifrado, d, n):
+    return pow(cifrado, d, n)
+
+
+# Entrada de datos
+p = int(input("Ingrese el primo p: "))
+q = int(input("Ingrese el primo q: "))
+e = int(input("Ingrese el exponente público e: "))
+M = int(input("Ingrese el mensaje M: "))
+
+# Cálculos principales
+n = p * q
+phi = (p - 1) * (q - 1)
+
+print("\nn =", n)
+print("φ(n) =", phi)
+
+# Verificar que e sea válido
+if mcd(e, phi) != 1:
+    print("\nERROR: e no es válido.")
+    print(f"gcd({e}, {phi}) ≠ 1")
+else:
+    d = inverso_modular(e, phi)
+
+    print("d =", d)
+
+    # Cifrado
+    C = cifrar(M, e, n)
+    print("C =", C)
+
+    # Descifrado
+    mensaje_original = descifrar(C, d, n)
+    print("Mensaje descifrado =", mensaje_original)
