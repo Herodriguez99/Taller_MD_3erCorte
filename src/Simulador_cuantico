@@ -1,0 +1,121 @@
+import numpy as np
+import random
+
+
+# Estados base
+cero = np.array([1, 0], dtype=float)   # |0>
+uno = np.array([0, 1], dtype=float)    # |1>
+
+
+# Compuertas cuánticas
+X = np.array([
+    [0, 1],
+    [1, 0]
+], dtype=float)
+
+
+Z = np.array([
+    [1, 0],
+    [0, -1]
+], dtype=float)
+
+
+H = (1 / np.sqrt(2)) * np.array([
+    [1, 1],
+    [1, -1]
+], dtype=float)
+
+
+# Aplicar una compuerta al estado
+
+def aplicar_compuerta(estado, compuerta):
+    return np.dot(compuerta, estado)
+
+
+# Calcular probabilidades
+
+def probabilidades(estado):
+    p0 = abs(estado[0]) ** 2
+    p1 = abs(estado[1]) ** 2
+
+    return p0, p1
+
+
+# Simular mediciones
+
+def medir(estado, cantidad=1000):
+    p0, p1 = probabilidades(estado)
+
+    resultados = {
+        0: 0,
+        1: 0
+    }
+
+    for _ in range(cantidad):
+        valor = random.random()
+
+        if valor < p0:
+            resultados[0] += 1
+        else:
+            resultados[1] += 1
+
+    return resultados
+
+
+# Mostrar resultados
+
+def mostrar_estado(nombre, estado):
+    p0, p1 = probabilidades(estado)
+
+    print("\n--------------------------")
+    print(nombre)
+    print("--------------------------")
+
+    print("Vector del estado:")
+    print(estado)
+
+    print("\nProbabilidad de medir |0>:",
+          round(p0 * 100, 2), "%")
+
+    print("Probabilidad de medir |1>:",
+          round(p1 * 100, 2), "%")
+
+    resultados = medir(estado)
+
+    print("\nResultados de 1000 mediciones:")
+    print("0:", resultados[0])
+    print("1:", resultados[1])
+
+
+# ----------------------------
+# Casos de prueba obligatorios
+# ----------------------------
+
+# Caso 1: X|0> = |1>
+
+estado1 = aplicar_compuerta(cero, X)
+
+mostrar_estado(
+    "Caso 1: X |0> = |1>",
+    estado1
+)
+
+
+# Caso 2: H|0>
+
+estado2 = aplicar_compuerta(cero, H)
+
+mostrar_estado(
+    "Caso 2: H |0>",
+    estado2
+)
+
+
+# Caso 3: HH|0> = |0>
+
+estado3 = aplicar_compuerta(estado2, H)
+
+mostrar_estado(
+    "Caso 3: H H |0>",
+    estado3
+)
