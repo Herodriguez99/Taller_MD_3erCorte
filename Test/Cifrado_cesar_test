@@ -1,0 +1,19 @@
+Ejemplo de ejecución
+
+Si se ingresa:
+
+Texto: HOLA UNAL
+k = 3
+
+el resultado será:
+
+Texto cifrado: KROD XQDO
+
+Otro ejemplo:
+
+Texto: Hola, UNAL 2026!
+k = 3
+
+produce:
+
+Krod, XQDO 2026!
