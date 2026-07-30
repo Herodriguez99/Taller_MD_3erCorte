@@ -1,0 +1,12 @@
+Ejemplo de Ejecución:
+
+Asignación de horarios:
+Color 1: ['Matematicas_Discretas', 'Fisica', 'Bases_Datos', 'Estadistica']
+Color 2: ['Calculo', 'Programacion', 'Electronica']
+Color 3: ['Algebra', 'Sistemas']
+Color 4: ['Redes']
+
+Cantidad de colores usados: 4
+
+Verificación correcta:
+No existen materias conectadas con el mismo color.
