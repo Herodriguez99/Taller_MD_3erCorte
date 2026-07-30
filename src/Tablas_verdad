@@ -1,0 +1,99 @@
+from itertools import product
+
+
+# Operadores lógicos
+def AND(a, b):
+    return a and b
+
+
+def OR(a, b):
+    return a or b
+
+
+def NOT(a):
+    return not a
+
+
+def XOR(a, b):
+    return a != b
+
+
+# Expresiones solicitadas
+
+def expresion1(A, B, C, D):
+    # (A ∧ B) ∨ (¬C)
+    return OR(AND(A, B), NOT(C))
+
+
+def expresion2(A, B, C, D):
+    # (A ⊕ B) ∧ C
+    return AND(XOR(A, B), C)
+
+
+def expresion3(A, B, C, D):
+    # (A ∨ B) ∧ (¬A ∨ C)
+    return AND(OR(A, B), OR(NOT(A), C))
+
+
+# Generar tabla de verdad
+
+def tabla_verdad(nombre, funcion):
+    print("\n" + "=" * 50)
+    print(nombre)
+    print("=" * 50)
+
+    print("A B C D | Resultado")
+    print("-------------------")
+
+    for valores in product([False, True], repeat=4):
+        A, B, C, D = valores
+
+        resultado = funcion(A, B, C, D)
+
+        print(
+            int(A),
+            int(B),
+            int(C),
+            int(D),
+            "|",
+            int(resultado)
+        )
+
+
+# Evaluación de una entrada específica
+
+def evaluar(funcion, A, B, C, D):
+    return int(funcion(A, B, C, D))
+
+
+# Mostrar tablas de las tres expresiones
+
+tabla_verdad(
+    "(A AND B) OR (NOT C)",
+    expresion1
+)
+
+tabla_verdad(
+    "(A XOR B) AND C",
+    expresion2
+)
+
+tabla_verdad(
+    "(A OR B) AND (NOT A OR C)",
+    expresion3
+)
+
+
+# Ejemplo de evaluación concreta
+print("\nEvaluación específica:")
+print("A=1, B=0, C=1, D=0")
+
+resultado = evaluar(
+    expresion1,
+    True,
+    False,
+    True,
+    False
+)
+
+print("Resultado expresión 1 =", resultado)
