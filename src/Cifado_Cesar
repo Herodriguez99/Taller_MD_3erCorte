@@ -1,0 +1,65 @@
+# Alfabeto latino sin la ñ
+ALFABETO = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+
+def cifrar_cesar(texto, k):
+    resultado = ""
+
+    for caracter in texto:
+        if caracter.upper() in ALFABETO:
+            es_mayuscula = caracter.isupper()
+            posicion = ALFABETO.index(caracter.upper())
+            nueva_posicion = (posicion + k) % 26
+            nueva_letra = ALFABETO[nueva_posicion]
+
+            if not es_mayuscula:
+                nueva_letra = nueva_letra.lower()
+
+            resultado += nueva_letra
+        else:
+            # Conserva espacios, números y signos
+            resultado += caracter
+
+    return resultado
+
+
+def descifrar_cesar(texto, k):
+    return cifrar_cesar(texto, -k)
+
+
+def fuerza_bruta(texto):
+    print("\nPosibles descifrados:\n")
+    for k in range(26):
+        print(f"k = {k:2d} --> {descifrar_cesar(texto, k)}")
+
+
+# Menú principal
+while True:
+    print("\n--- CIFRADO CÉSAR ---")
+    print("1. Cifrar un texto")
+    print("2. Descifrar un texto (conociendo k)")
+    print("3. Probar todos los desplazamientos")
+    print("4. Salir")
+
+    opcion = input("Seleccione una opción: ")
+
+    if opcion == "1":
+        texto = input("Ingrese el texto: ")
+        k = int(input("Ingrese el desplazamiento k: "))
+        print("Texto cifrado:", cifrar_cesar(texto, k))
+
+    elif opcion == "2":
+        texto = input("Ingrese el texto cifrado: ")
+        k = int(input("Ingrese el desplazamiento k: "))
+        print("Texto descifrado:", descifrar_cesar(texto, k))
+
+    elif opcion == "3":
+        texto = input("Ingrese el texto cifrado: ")
+        fuerza_bruta(texto)
+
+    elif opcion == "4":
+        print("Programa finalizado.")
+        break
+
+    else:
+        print("Opción no válida.")
