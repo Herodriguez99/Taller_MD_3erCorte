@@ -1,0 +1,146 @@
+import math
+import heapq
+from collections import Counter
+
+
+# ----------------------------------
+# Cálculo de frecuencias y entropía
+# ----------------------------------
+
+def analizar_texto(texto):
+    frecuencias = Counter(texto)
+    total = len(texto)
+
+    probabilidades = {}
+
+    for simbolo, frecuencia in frecuencias.items():
+        probabilidades[simbolo] = frecuencia / total
+
+    entropia = 0
+
+    for p in probabilidades.values():
+        entropia -= p * math.log2(p)
+
+    return frecuencias, probabilidades, entropia
+
+
+def mostrar_analisis(nombre, texto):
+    frecuencias, probabilidades, entropia = analizar_texto(texto)
+
+    print("\n==============================")
+    print(nombre)
+    print("==============================")
+
+    print("Texto:", texto)
+
+    print("\nFrecuencias:")
+    for simbolo, cantidad in frecuencias.items():
+        print(repr(simbolo), ":", cantidad)
+
+    print("\nProbabilidades:")
+    for simbolo, prob in probabilidades.items():
+        print(repr(simbolo), ":", round(prob, 4))
+
+    print("\nEntropía de Shannon:")
+    print(round(entropia, 4), "bits/símbolo")
+
+    return entropia
+
+
+# ----------------------------------
+# Huffman básico (opcional)
+# ----------------------------------
+
+def construir_huffman(frecuencias):
+    cola = []
+
+    for simbolo, frecuencia in frecuencias.items():
+        heapq.heappush(cola, (frecuencia, simbolo))
+
+    while len(cola) > 1:
+        f1, izquierda = heapq.heappop(cola)
+        f2, derecha = heapq.heappop(cola)
+
+        heapq.heappush(
+            cola,
+            (f1 + f2, (izquierda, derecha))
+        )
+
+    return cola[0][1]
+
+
+def generar_codigos(arbol, prefijo="", codigos=None):
+    if codigos is None:
+        codigos = {}
+
+    if isinstance(arbol, str):
+        codigos[arbol] = prefijo
+
+    else:
+        izquierda, derecha = arbol
+
+        generar_codigos(izquierda, prefijo + "0", codigos)
+        generar_codigos(derecha, prefijo + "1", codigos)
+
+    return codigos
+
+
+def longitud_promedio(texto, codigos):
+    suma = 0
+
+    for simbolo in texto:
+        suma += len(codigos[simbolo])
+
+    return suma / len(texto)
+
+
+# ----------------------------------
+# Pruebas
+# ----------------------------------
+
+texto1 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+
+texto2 = "La información digital puede tener muchos símbolos diferentes"
+
+
+h1 = mostrar_analisis(
+    "Texto repetitivo",
+    texto1
+)
+
+h2 = mostrar_analisis(
+    "Texto variado",
+    texto2
+)
+
+
+# Comparación
+
+print("\n==============================")
+print("COMPARACIÓN")
+print("==============================")
+
+if h1 > h2:
+    print("El texto repetitivo tiene mayor entropía.")
+elif h2 > h1:
+    print("El texto variado tiene mayor entropía.")
+else:
+    print("Ambos textos tienen la misma entropía.")
+
+
+# Huffman para el texto variado
+
+frecuencias, _, _ = analizar_texto(texto2)
+
+arbol = construir_huffman(frecuencias)
+
+codigos = generar_codigos(arbol)
+
+print("\nCódigos Huffman:")
+for simbolo, codigo in codigos.items():
+    print(repr(simbolo), ":", codigo)
+
+
+print("\nLongitud promedio Huffman:")
+print(round(longitud_promedio(texto2, codigos), 4),
+      "bits/símbolo")
