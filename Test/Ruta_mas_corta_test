@@ -1,0 +1,12 @@
+Ejemplo de Ejecución
+
+Si se ingresa:
+
+Inicio: Portal
+Destino: Universidad
+
+Una posible salida es:
+
+Distancia mínima: 15
+Ruta encontrada:
+Portal -> Calle26 -> Museo -> Biblioteca -> Universidad
