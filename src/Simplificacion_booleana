@@ -1,0 +1,166 @@
+from itertools import product
+
+
+def binario(numero, variables):
+    return format(numero, f"0{variables}b")
+
+
+def combinar(a, b):
+    """
+    Combina dos grupos si solo difieren en un bit.
+    """
+    diferencia = 0
+    resultado = ""
+
+    for x, y in zip(a, b):
+        if x != y:
+            diferencia += 1
+            resultado += "-"
+        else:
+            resultado += x
+
+    if diferencia == 1:
+        return resultado
+
+    return None
+
+
+def quine_mccluskey(minterminos, variables):
+    grupos = {}
+
+    # Agrupar por cantidad de unos
+    for m in minterminos:
+        b = binario(m, variables)
+        cantidad_unos = b.count("1")
+
+        if cantidad_unos not in grupos:
+            grupos[cantidad_unos] = []
+
+        grupos[cantidad_unos].append(b)
+
+    implicantes = []
+
+    while grupos:
+        nuevos = {}
+        usados = set()
+
+        claves = sorted(grupos.keys())
+
+        for i in range(len(claves) - 1):
+            for a in grupos[claves[i]]:
+                for b in grupos[claves[i] + 1]:
+                    combinado = combinar(a, b)
+
+                    if combinado:
+                        usados.add(a)
+                        usados.add(b)
+
+                        unos = combinado.count("1")
+
+                        if unos not in nuevos:
+                            nuevos[unos] = []
+
+                        if combinado not in nuevos[unos]:
+                            nuevos[unos].append(combinado)
+
+        for grupo in grupos.values():
+            for termino in grupo:
+                if termino not in usados:
+                    implicantes.append(termino)
+
+        grupos = nuevos
+
+    return implicantes
+
+
+def convertir_expresion(implicantes, nombres):
+    terminos = []
+
+    for implicante in implicantes:
+        termino = ""
+
+        for bit, variable in zip(implicante, nombres):
+            if bit == "1":
+                termino += variable
+            elif bit == "0":
+                termino += "¬" + variable
+
+        if termino == "":
+            termino = "1"
+
+        terminos.append(termino)
+
+    return " ∨ ".join(terminos)
+
+
+def evaluar_implicante(numero, implicantes, variables):
+    bits = binario(numero, variables)
+
+    for implicante in implicantes:
+        coincide = True
+
+        for a, b in zip(bits, implicante):
+            if b != "-" and a != b:
+                coincide = False
+                break
+
+        if coincide:
+            return True
+
+    return False
+
+
+def tabla_comparacion(minterminos, implicantes, variables):
+    print("\nTABLA DE VERIFICACIÓN")
+    print("--------------------")
+
+    print("Entrada | Original | Simplificada")
+
+    for i in range(2 ** variables):
+        original = i in minterminos
+        simplificada = evaluar_implicante(
+            i,
+            implicantes,
+            variables
+        )
+
+        print(
+            binario(i, variables),
+            "   |    ",
+            int(original),
+            "     |      ",
+            int(simplificada)
+        )
+
+
+# -------------------------
+# Caso de prueba
+# -------------------------
+
+variables = 3
+
+minterminos = {1, 3, 5, 7}
+
+nombres_variables = ["A", "B", "C"]
+
+
+implicantes = quine_mccluskey(
+    minterminos,
+    variables
+)
+
+
+print("Minterminos:", minterminos)
+
+print("\nExpresión simplificada:")
+print(convertir_expresion(
+    implicantes,
+    nombres_variables
+))
+
+
+tabla_comparacion(
+    minterminos,
+    implicantes,
+    variables
+)
