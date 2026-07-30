@@ -1,0 +1,74 @@
+import heapq
+
+
+def dijkstra(grafo, inicio, destino):
+    # Inicializar distancias
+    distancias = {vertice: float("inf") for vertice in grafo}
+    distancias[inicio] = 0
+
+    # Permite reconstruir el camino
+    anteriores = {vertice: None for vertice in grafo}
+
+    # Cola de prioridad (distancia, vértice)
+    cola = [(0, inicio)]
+
+    while cola:
+        distancia_actual, vertice_actual = heapq.heappop(cola)
+
+        # Ignorar entradas obsoletas
+        if distancia_actual > distancias[vertice_actual]:
+            continue
+
+        # Explorar vecinos
+        for vecino, peso in grafo[vertice_actual]:
+            nueva_distancia = distancia_actual + peso
+
+            if nueva_distancia < distancias[vecino]:
+                distancias[vecino] = nueva_distancia
+                anteriores[vecino] = vertice_actual
+                heapq.heappush(cola, (nueva_distancia, vecino))
+
+    # Reconstruir la ruta
+    ruta = []
+    actual = destino
+
+    while actual is not None:
+        ruta.append(actual)
+        actual = anteriores[actual]
+
+    ruta.reverse()
+
+    if distancias[destino] == float("inf"):
+        return None, []
+
+    return distancias[destino], ruta
+
+
+# Grafo de prueba (8 vértices)
+grafo = {
+    "Portal": [("Calle26", 4), ("Terminal", 8)],
+    "Calle26": [("Portal", 4), ("Museo", 3), ("Parque", 5)],
+    "Museo": [("Calle26", 3), ("Centro", 2), ("Biblioteca", 4)],
+    "Centro": [("Museo", 2), ("Universidad", 6), ("Hospital", 5)],
+    "Universidad": [("Centro", 6), ("Biblioteca", 2), ("Terminal", 7)],
+    "Biblioteca": [("Museo", 4), ("Universidad", 2), ("Parque", 3)],
+    "Parque": [("Calle26", 5), ("Biblioteca", 3), ("Hospital", 4)],
+    "Hospital": [("Parque", 4), ("Centro", 5), ("Terminal", 2)],
+    "Terminal": [("Portal", 8), ("Universidad", 7), ("Hospital", 2)]
+}
+
+# Solicitar los vértices al usuario
+inicio = input("Ingrese el vértice de inicio: ")
+destino = input("Ingrese el vértice destino: ")
+
+if inicio not in grafo or destino not in grafo:
+    print("Uno de los vértices no existe.")
+else:
+    distancia, ruta = dijkstra(grafo, inicio, destino)
+
+    if distancia is None:
+        print("No existe una ruta entre los vértices indicados.")
+    else:
+        print("\nDistancia mínima:", distancia)
+        print("Ruta encontrada:")
+        print(" -> ".join(ruta))
