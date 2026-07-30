@@ -1,0 +1,95 @@
+def coloreo_voraz(grafo):
+    colores = {}
+
+    # Orden de recorrido de los vértices
+    vertices = list(grafo.keys())
+
+    for vertice in vertices:
+        colores_usados = set()
+
+        # Revisar colores de los vecinos
+        for vecino in grafo[vertice]:
+            if vecino in colores:
+                colores_usados.add(colores[vecino])
+
+        # Buscar el primer color disponible
+        color = 1
+        while color in colores_usados:
+            color += 1
+
+        colores[vertice] = color
+
+    return colores
+
+
+def verificar_coloreo(grafo, colores):
+    for vertice in grafo:
+        for vecino in grafo[vertice]:
+            if colores[vertice] == colores[vecino]:
+                return False
+    return True
+
+
+def mostrar_resultado(colores):
+    grupos = {}
+
+    for materia, color in colores.items():
+        if color not in grupos:
+            grupos[color] = []
+
+        grupos[color].append(materia)
+
+    print("\nAsignación de horarios:")
+    for color, materias in grupos.items():
+        print(f"Color {color}: {materias}")
+
+    print("\nCantidad de colores usados:", len(grupos))
+
+
+# Grafo de conflictos entre materias
+# Una arista indica que dos materias no pueden tener el mismo horario
+
+grafo = {
+    "Matematicas_Discretas": [
+        "Calculo", "Programacion"
+    ],
+    "Calculo": [
+        "Matematicas_Discretas", "Fisica", "Algebra"
+    ],
+    "Programacion": [
+        "Matematicas_Discretas", "Bases_Datos", "Sistemas"
+    ],
+    "Fisica": [
+        "Calculo", "Electronica", "Algebra"
+    ],
+    "Algebra": [
+        "Calculo", "Fisica", "Estadistica"
+    ],
+    "Bases_Datos": [
+        "Programacion", "Redes", "Sistemas"
+    ],
+    "Sistemas": [
+        "Programacion", "Bases_Datos", "Redes"
+    ],
+    "Electronica": [
+        "Fisica", "Redes"
+    ],
+    "Estadistica": [
+        "Algebra", "Redes"
+    ],
+    "Redes": [
+        "Bases_Datos", "Sistemas", "Electronica", "Estadistica"
+    ]
+}
+
+
+colores = coloreo_voraz(grafo)
+
+mostrar_resultado(colores)
+
+
+if verificar_coloreo(grafo, colores):
+    print("\nVerificación correcta:")
+    print("No existen materias conectadas con el mismo color.")
+else:
+    print("\nError: existe un conflicto de horarios.")
